@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE Society - GHEC Bandla | Premier Tech Community</title>
+    <style>
+        :root {
+            --primary-blue: #001f3f;
+            --accent-cyan: #00d4ff;
+            --accent-red: #ff6b6b;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-dark: rgba(0, 30, 80, 0.95);
+            --shadow-light: 0 20px 40px rgba(0,0,0,0.1);
+            --shadow-hover: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: #2d3748;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(0, 20, 60, 0.85) 0%, 
+                rgba(0, 50, 150, 0.7) 50%,
+                rgba(0, 100, 200, 0.6) 100%);
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-0JlTi5yy4cDijLGA0jJ81M_xhe-y4hDNHQ&s'),
+                radial-gradient(circle at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,119,198,0.3) 0%, transparent 50%);
+            background-size: cover, 200px 200px, 200px 200px;
+            background-position: center, 20px 80px, 80% 20px;
+            background-blend-mode: overlay;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced Admin Bar */
+        .admin-bar {
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(25px);
+            padding: 12px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1002;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .admin-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-login input {
+            padding: 12px 18px;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 30px;
+            background: rgba(255,255,255,0.92);
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-login input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 4px rgba(0,212,255,0.1);
+        }
+
+        .admin-login button {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--accent-cyan), #0099cc);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 14px rgba(0,212,255,0.3);
+        }
+
+        .admin-login button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,212,255,0.4);
+        }
+
+        /* Enhanced Header */
+        header {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(30px);
+            padding: 1.2rem 0;
+            position: fixed;
+            width: 100%;
+            top: 65px;
+            z-index: 1001;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0,212,255,0.6);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover img {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 50%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-red));
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        nav a:hover::before {
+            width: 100%;
+            left: 0;
+        }
+
+        nav a:hover {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0,212,255,0.5);
+        }
+
+        /* Hero Section Enhanced */
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #ffffff, var(--accent-cyan), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: heroGlow 3s ease-in-out infinite alternate;
+            text-shadow: 0 0 40px rgba(0,212,255,0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.6rem;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 20px 50px;
+            background: linear-gradient(45deg, var(--accent-red), #ff8e8e);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 35px rgba(255,107,107,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(255,107,107,0.5);
+        }
+
+        /* Enhanced Section Styling */
+        section {
+            padding: 120px 0;
+            margin: 50px 0;
+        }
+
+        .section-wrapper {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            border-radius: 40px;
+            padding: 80px 60px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid rgba(255,255,255,0.25);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .section-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-red), var(--accent-cyan));
+            animation: shimmer 3s infinite;
+        }
+
+        .section-wrapper:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        section:nth-child(even) .section-wrapper {
+            background: var(--glass-dark);
+            color: white;
+        }
+
+        section:nth-child(even) .section-wrapper h2 {
+            color: var(--accent-cyan);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 4rem;
+            font-weight: 800;
+            position: relative;
+        }
+
+        h2::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.1;
+            z-index: -1;
+            font-size: 8rem;
+            font-weight: 900;
+        }
+
+        /* Enhanced Gallery Section */
+        #gallery .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .gallery-card {
+            position: relative;
+            height: 350px;
+            border-radius: 25px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .gallery-card:hover {
+            transform: scale(1.05) translateY(-20px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+        }
+
+        .gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            color: white;
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-card:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Grid and Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 3rem;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.92);
+            padding: 3rem;
+            border-radius: 25px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        section:nth-child(even) .card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(0,212,255,0.1), transparent);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+            transform: rotate(360deg);
+        }
+
+        .card:hover {
+            transform: translateY(-20px) rotateX(8deg);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Members */
+        .member {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .member:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateX(15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .member-avatar {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-red));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1.5rem;
+                justify-content: center;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .grid, #gallery .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-wrapper {
+                padding: 40px 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes heroGlow {
+            0% { filter: drop-shadow(0 0 20px var(--accent-cyan)); }
+            100% { filter: drop-shadow(0 0 40px var(--accent-cyan)); }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .observe {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .observe.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Enhanced Admin Bar -->
+    <div class="admin-bar">
+        <div class="container">
+            <div class="admin-container">
+                <div class="admin-login">
+                    <input type="text" id="adminUser" placeholder="👤 Admin Username">
+                    <input type="password" id="adminPass" placeholder="🔐 Password">
+                    <button onclick="adminLogin()">🚀 Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="https://media.licdn.com/dms/image/v2/D4E03AQFWQcT_y-6sdA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1676871363708?e=2147483647&v=beta&t=JAE5hxFyeVAkBhUscJoU8Us_xeyjZ696FmeskxSR_Yw" alt="GHEC Bandla Logo">
+                    CSE Society
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#hero">🏠 Home</a></li>
+                        <li><a href="#about">📖 About</a></li>
+                        <li><a href="#events">🎉 Events</a></li>
+                        <li><a href="#members">👥 Team</a></li>
+                        <li><a href="#projects">💻 Projects</a></li>
+                        <li><a href="#gallery">🖼️ Gallery</a></li>
+                        <li><a href="#contact">📞 Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Hero -->
+    <section id="hero">
+        <div class="hero-content">
+            <div style="animation: fadeInUp 1.2s ease 0.3s both;">
+                <h1 data-text="CSE SOCIETY">CSE SOCIETY</h1>
+                <p>Government Hydro Engineering College Bandla<br><strong>Where Innovation Meets Passion</strong></p>
+                <a href="#about" class="cta-button">🚀 Discover More</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- About Section -->
+        <section id="about" class="observe">
+            <div class="section-wrapper">
+                <h2 data-text="ABOUT">About CSE Society</h2>
+                <p style="text-align: center; font-size: 1.4rem; max-width: 1000px; margin: 0 auto 4rem; line-height: 1.8;">
+                    Pioneering excellence in Computer Science at GHEC Bandla. We bridge academia with industry, 
+                    fostering innovation through cutting-edge projects, workshops, and hackathons.
+                </p>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events" class="observe">
+            <div class="section-wrapper">
+                <h2 data-text="EVENTS">Upcoming Events</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>🌐 CodeFest 2026</h3>
+                        <p>48-hour national hackathon with ₹5L+ prizes and industry mentors</p>
+                    </div>
+                    <div class="card">
+                        <h3>🤖 AI/ML Summit</h3>
+                        <p>Deep dive into Generative AI with hands-on workshops</p>
+                    </div>
+                    <div class="card">
+                        <h3>⚡ CyberSec Challenge</h3>
+                        <p>Capture The Flag competition with ethical hacking training</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Team Section -->
+        <section id="members" class="observe">
+            <div class="section-wrapper">
+                <h2 data-text="TEAM">Core Team 2026</h2>
+                <div class="grid">
+                    <div>
+                        <div class="member">
+                            <div class="member-avatar">AR</div>
+                            <div>
+                                <h4>Aryan Rajput</h4>
+                                <p class="contact-info">🎖️ President<br>aryan.rajput22@gmail.com<br>+91 98765 43210</p>
+                            </div>
+                        </div>
+                        <div class="member">
+                            <div class="member-avatar">PS</div>
+                            <div>
+                                <h4>Priya Sharma</h4>
+                                <p class="contact-info">👑 Vice President<br>priya.sharmaCSE@gmail.com<br>+91 98765 43211</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="member">
+                            <div class="member-avatar">RS</div>
+                            <div>
+                                <h4>Rohan Singh</h4>
+                                <p class="contact-info">📋 Secretary<br>rohan.singhCSE@gmail.com<br>+91 98765 43212</p>
+                            </div>
+                        </div>
+                        <div class="member">
+                            <div class="member-avatar">AK</div>
+                            <div>
+                                <h4>Anjali Kumari</h4>
+                                <p class="contact-info">💰 Treasurer<br>anjali.kumariCSE@gmail.com<br>+91 98765 43213</p>
+                            </div>
+                        </div>
+                        <div class="member">
+                            <div class="member-avatar">VK</div>
+                            <div>
+                                <h4>Vikram Kumar</h4>
+                                <p class="contact-info">🎪 Event Head<br>vikram.kumarCSE@gmail.com<br>+91 98765 43214</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="observe">
+            <div class="section-wrapper">
+                <h2 data-text="PROJECTS">Featured Projects</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>🚀 SmartCampus IoT</h3>
+                        <p>Real-time campus monitoring with AI analytics dashboard</p>
+                    </div>
+                    <div class="card">
+                        <h3>💻 GHEC Portal v2</h3>
+                        <p>Full-stack student management system with ML recommendations</p>
+                    </div>
+                    <div class="card">
+                        <h3>🤖 CSE Assistant Bot</h3>
+                        <p>24/7 AI chatbot trained on college data and events</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Gallery Section with Real Images -->
+        <section id="gallery" class="observe">
+            <div class="section-wrapper">
+                <h2 data-text="GALLERY">Memorable Moments</h2>
+                <div class="grid">
+                    <div class="gallery-card">
+                        <img src="https://ghec.ac.in/uploads/department/1687149832IMG-20220705-WA0023.jpg" alt="Computer Lab">
+                        <div class="gallery-overlay">
+                            <div class="gallery-title">🖥️ Computer Lab</div>
+                            <p>State-of-the-art computing facilities equipped for modern development</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="https://ghec.ac.in/uploads/department/1731664181IMG_20241115_094752.jpg" alt="Group Discussion">
+                        <div class="gallery-overlay">
+                            <div class="gallery-title">💬 Group Discussion Organised by CSE Society</div>
+                            <p>Interactive sessions fostering collaboration and innovation</p>
+                        </div>
+                    </div>
+                    <div class="gallery-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0qHpjWI94NF-sERskIwnvLNm0bDCqm6-UUw&s" alt="Dance Competition">
+                        <div class="gallery-overlay">
+                            <div class="gallery-title">💃 Dance Competition Organised by CSE Society</div>
+                            <p>Cultural events bringing tech community together</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="observe">
+            <div class="section-wrapper">
+                <h2 data-text="CONTACT">Get In Touch</h2>
+                <div style="text-align: center; font-size: 1.5rem;">
+                    <p><strong>📧 cse@ghecbandla.ac.in</strong></p>
+                    <p>📍 Government Hydro Engineering College<br>Bandla, Bilaspur, Himachal Pradesh</p>
+                    <p>📱 WhatsApp: <strong>+91 98765 43215</strong></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Enhanced Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 120;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Dynamic Header Effects
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const scroll = window.scrollY;
+            header.style.background = `rgba(255, 255, 255, ${0.97 + scroll * 0.001})`;
+            header.style.boxShadow = `0 ${5 + scroll * 0.01}px ${20 + scroll * 0.02}px rgba(0,0,0,${0.05 + scroll * 0.0001})`;
+        });
+
+        // Advanced Scroll Animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('reveal');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.observe').forEach(el => observer.observe(el));
+
+        // Enhanced Admin Login
+        function adminLogin() {
+            const username = document.getElementById('adminUser').value;
+            const password = document.getElementById('adminPass').value;
+            const adminBar = document.querySelector('.admin-bar');
+            
+            if (username === 'admin' && password === 'cse@ghec2026') {
+                adminBar.style.background = 'linear-gradient(135deg, rgba(34,197,94,0.95), rgba(74,222,128,0.95))';
+                adminBar.style.borderBottomColor = 'rgba(34,197,94,0.5)';
+                alert('✅ Admin Login Successful!\nWelcome to CSE Society Dashboard 🚀');
+                
+                // Simulate admin features unlock
+                document.querySelectorAll('.gallery-card').forEach((card, i) => {
+                    setTimeout(() => card.style.transform = 'scale(1.1) translateY(-10px) rotate(2deg)', i * 200);
+                });
+            } else {
+                adminBar.style.background = 'linear-gradient(135deg, rgba(239,68,68,0.95), rgba(248,113,113,0.95))';
+                alert('❌ Invalid credentials!\nDemo: admin / cse@ghec2026');
+                setTimeout(() => {
+                    adminBar.style.background = 'rgba(15, 23, 42, 0.98)';
+                    adminBar.style.borderBottomColor = 'rgba(59, 130, 246, 0.3)';
+                }, 2500);
+            }
+        }
+
+        // Enter key support
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const active = document.activeElement;
+                if (active.id === 'adminPass') adminLogin();
+            }
+        });
+
+        // Floating Particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Parallax Hero Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('#hero');
+            if (hero) hero.style.transform = `translateY(${scrolled * 0.4}px)`;
+        });
+
+        // Gallery Hover Enhancements
+        document.querySelectorAll('.gallery-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.transformOrigin = `${x}px ${y}px`;
+            });
+        });
+    </script>
+</body>
+</html>
